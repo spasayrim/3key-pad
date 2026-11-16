@@ -1,0 +1,7 @@
+[tasks.uf2]
+script = [
+    "cargo build --release",
+    "arm-none-eabi-objcopy -O binary target/thumbv7em-none-eabihf/release/rmk target/firmware.bin",
+    "python3 -c \"import urllib.request; urllib.request.urlretrieve('https://raw.githubusercontent.com/microsoft/uf2/master/utils/uf2conv.py', 'uf2conv.py')\"",
+    "python3 uf2conv.py -c -f 0xADA52840 -o target/firmware.uf2 firmware.bin",
+]
