@@ -7,7 +7,36 @@ on:
 
 jobs:
   build:
-    uses: rmk-rs/rmk/.github/workflows/user_build.yml@main
-    with:
-      keyboard_toml_path: "keyboard.toml"
-      vial_json_path: "vial.json"
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install ARM GCC toolchain
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc-arm-none-eabi
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: thumbv7em-none-eabihf
+
+      - name: Install cargo-make, flip-link, rmkit
+        run: cargo install cargo-make flip-link rmkit
+
+      - name: Generate RMK project from keyboard.toml
+        run: |
+          rmkit create --keyboard-toml-path keyboard.toml --vial-json-path vial.json
+
+      - name: Build Firmware
+        run: |
+          PROJECT_DIR=$(find . -maxdepth 2 -name Cargo.toml -exec dirname {} \; | head -n 1)
+          cd "$PROJECT_DIR"
+          cargo make uf2 --release
+
+      - name: Upload Firmware Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: rmk-firmware
+          path: '**/*.uf2'
