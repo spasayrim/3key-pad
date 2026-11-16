@@ -1,6 +1,10 @@
 [keyboard]
 name = "Mini-numpad-3key"
 chip = "nrf52840"
+vendor_id = 0x4c4b
+product_id = 0x4643
+manufacturer = "RMK"
+product_name = "Mini 3-Key Pad"
 
 [matrix]
 matrix_type = "direct_pin"
