@@ -14,8 +14,10 @@ direct_pin_low_active = true
 [layout]
 rows = 1
 cols = 3
-layers = 1
-keymap = [[["A", "B", "C"]]]
+map = "(0,0) (0,1) (0,2)"
+
+[[keymap.layer]]
+keys = "A B C"
 
 [host]
 vial_enabled = true
