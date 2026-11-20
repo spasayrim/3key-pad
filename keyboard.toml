@@ -21,3 +21,4 @@ keys = "A B C"
 
 [host]
 vial_enabled = true
+vial_insecure = true
